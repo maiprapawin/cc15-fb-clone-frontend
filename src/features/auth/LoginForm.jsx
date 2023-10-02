@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import LoginButton from "./LoginButton";
 import LoginInput from "./LoginInput";
 import { useAuth } from "../../hooks/use-auth";
@@ -21,7 +22,9 @@ export default function LoginForm() {
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
-    login(input); //เขียน input แบบนี้ได้เลย เพราะว่าเราทำ const login ในไฟล์ AuthContext.jsx เป็น obj ไว้
+    login(input).catch((err) => {
+      toast.error(err.response.data.message);
+    }); //เขียน input แบบนี้ได้เลย เพราะว่าเราทำ const login ในไฟล์ AuthContext.jsx เป็น obj ไว้
   };
 
   return (

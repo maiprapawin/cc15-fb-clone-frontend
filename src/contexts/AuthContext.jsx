@@ -43,17 +43,19 @@ export default function AuthContextProvider({ children }) {
   //// Function: Login ////
   // เรียก fn มาใช้ตอน submit form
   const login = async (credential) => {
-    try {
-      const res = await axios.post("/auth/login", credential);
-      addAccessToken(res.data.accessToken); //ได้ access token ได้มาจาก res
-      setAuthUser(res.data.user);
-    } catch (err) {
-      console.log(err);
-    }
+    const res = await axios.post("/auth/login", credential);
+    addAccessToken(res.data.accessToken); //ได้ access token ได้มาจาก res
+    setAuthUser(res.data.user);
+  };
+
+  const register = async (registerInputObject) => {
+    const res = await axios.post("/auth/register", registerInputObject);
+    addAccessToken(res.data.accessToken); //ได้ access token ได้มาจาก res เหมือนข้างบน login เราได้ token & user info แต่ register เราได้แค่ token = ต้องไปแก้ backend
+    setAuthUser(res.data.user);
   };
 
   return (
-    <AuthContext.Provider value={{ login, authUser, initialLoading }}>
+    <AuthContext.Provider value={{ login, authUser, initialLoading, register }}>
       {children}
     </AuthContext.Provider>
   );

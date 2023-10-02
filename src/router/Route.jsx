@@ -5,17 +5,18 @@ import HomePage from "../pages/HomePage";
 import FriendPage from "../pages/FriendPage";
 import ProfilePage from "../pages/ProfilePage";
 import { RouterProvider } from "react-router-dom";
+import RedirectIfAuthenticated from "../features/auth/RedirectIfAuthenticated";
+import Authenticated from "../features/auth/Authenticated";
 
 const router = createBrowserRouter([
   {
-    //ถ้า path ใน browser เราเป็น /login = ให้มัน render ไปที่หน้า LoginPage
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
     // แต่ path ที่เหลือมันใช้ header ร่วมกัน เราเลยสร้างเป็น nested route
     path: "/",
-    element: <Layout />,
+    element: (
+      <Authenticated>
+        <Layout />
+      </Authenticated>
+    ),
     // ก้อน children นี้คือ Outlet
     children: [
       { path: "", element: <HomePage /> },
@@ -23,6 +24,17 @@ const router = createBrowserRouter([
       { path: "profile/:profileId", element: <ProfilePage /> },
       // : คือ path parameter แปลว่าหลัง : คือเป็น profile อะไรก้ได้
     ],
+  },
+
+  {
+    //ถ้า path ใน browser เราเป็น /login = ให้มัน render ไปที่หน้า LoginPage
+    // ถ้า user เรามีค่า มันจะ redirect ไปหน้า home
+    path: "/login",
+    element: (
+      <RedirectIfAuthenticated>
+        <LoginPage />
+      </RedirectIfAuthenticated>
+    ),
   },
 ]);
 

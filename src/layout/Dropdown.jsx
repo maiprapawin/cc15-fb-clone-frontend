@@ -6,7 +6,7 @@ import { useAuth } from "../hooks/use-auth";
 
 export default function Dropdown() {
   const [isOpen, setIsOpen] = useState(false);
-  const dropDownE1 = useRef(null); // {current: null}
+  const dropDownEl = useRef(null); // {current: null}
   // useRef เหมือนเป็น hook ตัวนึงที่ประกาศตัวแปรได้ จะมีค่า key = current เช่น const a = useRef(20); // a = {current: 20}
   // useRef เหมือนเป็น memory ของ state
   // Component เปลี่ยนแปลง useRef = ไม่ rerender แต่ state = rerender
@@ -15,7 +15,7 @@ export default function Dropdown() {
   // useEffectจะ run ก็ต่อเมื่อ Component ด้านล่างถูกรันแล้ว
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (!dropDownE1.current.contains(e.target)) {
+      if (!dropDownEl.current.contains(e.target)) {
         setIsOpen(false); //ถ้าคลิกตรงไหนในหน้าจอเว็บที่ไม่ใช่กล่อง dropdown = ให้ปิดกล่อง dropdown
       }
     };
@@ -24,7 +24,7 @@ export default function Dropdown() {
   }, []);
 
   return (
-    <div className="relative" ref={dropDownE1}>
+    <div className="relative" ref={dropDownEl}>
       {/* จากเดิม dropDownEl: {current: null} => กลายเป็น {current: object <div class="relative">} */}
       <div className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
         <Avatar />

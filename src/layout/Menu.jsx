@@ -1,4 +1,4 @@
-// import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { HouseIcon, UserGroupIcon } from "../icons";
 import MenuItem from "./MenuItem";
 
@@ -8,11 +8,17 @@ const menus = [
 ];
 
 export default function Menu() {
-  // useLocation()
+  const { pathname } = useLocation();
+
   return (
     <nav className="flex justify-center items-center gap-2">
       {menus.map((el) => (
-        <MenuItem key={el.id} to={el.to} Icon={el.Icon} />
+        <MenuItem
+          key={el.id}
+          to={el.to}
+          Icon={el.Icon}
+          active={pathname === el.to}
+        />
       ))}
     </nav>
   );

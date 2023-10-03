@@ -1,16 +1,31 @@
 import { Link } from "react-router-dom";
 import Avatar from "../components/Avatar";
 import { RightFromBracketIcon } from "../icons";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../hooks/use-auth";
 
 export default function Dropdown() {
   const [isOpen, setIsOpen] = useState(false);
+  const dropDownE1 = useRef(null); // {current: null}
+  // useRef เหมือนเป็น hook ตัวนึงที่ประกาศตัวแปรได้ จะมีค่า key = current เช่น const a = useRef(20); // a = {current: 20}
+  // useRef เหมือนเป็น memory ของ state
+  // Component เปลี่ยนแปลง useRef = ไม่ rerender แต่ state = rerender
+  const { logout, authUser } = useAuth(); // authUser = {id, firstName, lastName, profileImage, coverImage}
 
-  const { logout } = useAuth();
+  // useEffectจะ run ก็ต่อเมื่อ Component ด้านล่างถูกรันแล้ว
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!dropDownE1.current.contains(e.target)) {
+        setIsOpen(false); //ถ้าคลิกตรงไหนในหน้าจอเว็บที่ไม่ใช่กล่อง dropdown = ให้ปิดกล่อง dropdown
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
 
   return (
-    <div className="relative">
+    <div className="relative" ref={dropDownE1}>
+      {/* จากเดิม dropDownEl: {current: null} => กลายเป็น {current: object <div class="relative">} */}
       <div className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
         <Avatar />
       </div>
@@ -20,7 +35,9 @@ export default function Dropdown() {
             <div className=" flex gap-4 p-2 items-center rounded-xl hover:bg-gray-100">
               <Avatar className="h-14" />
               <div>
-                <div className="font-semibold">John Doe</div>
+                <div className="font-semibold">
+                  {authUser.firstName} {authUser.lastName}
+                </div>
                 <div className="text-sm text-gray-500">See your profile</div>
               </div>
             </div>

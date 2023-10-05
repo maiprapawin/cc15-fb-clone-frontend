@@ -14,10 +14,19 @@ export default function ReceiverAction({ setStatusWithAuthUser }) {
     }
   };
 
+  const handleClickReject = async () => {
+    try {
+      await axios.delete(`/friend/${profileId}/reject`);
+      setStatusWithAuthUser("UNKNOWN");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="flex gap-4">
       <ActionButton onClick={handleClickAccept}>Accept</ActionButton>
-      <ActionButton>Reject</ActionButton>
+      <ActionButton onClick={handleClickReject}>Reject</ActionButton>
     </div>
   );
 }

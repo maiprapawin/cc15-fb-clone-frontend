@@ -3,14 +3,15 @@ import ProfileCover from "../features/profile/ProfileCover";
 import ProfileInfo from "../features/profile/ProfileInfo";
 import { useEffect, useState } from "react";
 import axios from "../config/axios";
-// import { useAuth } from "../hooks/use-auth";
+import { useAuth } from "../hooks/use-auth";
 
 export default function ProfilePage() {
   const [profileUser, setProfileUser] = useState({});
   const [statusWithAuthUser, setStatusWithAuthUser] = useState("");
-  const { profileId } = useParams();
+  const { profileId } = useParams(); //profileId เอามาจาก param
 
-  // const { authUser } = useAuth(); //ถ้า authUser เปลี่ยน effect fn นี้ก็จะรันอีกรอบหนึ่ง (authUser จะเปลี่ยนตอนที่อัพเดทรูป)
+  const { authUser } = useAuth(); //ถ้า authUser เปลี่ยน effect fn นี้ก็จะรันอีกรอบหนึ่ง (authUser จะเปลี่ยนตอนที่อัพเดทรูป)
+  const isAuthUser = authUser.id === +profileId;
 
   useEffect(() => {
     axios
@@ -28,10 +29,15 @@ export default function ProfilePage() {
     <div className="bg-gradient-to-b from-gray-200 to-white shadow pb-4">
       {profileUser ? (
         <>
-          <ProfileCover coverImage={profileUser?.coverImage} />
+          <ProfileCover
+            coverImage={
+              isAuthUser ? authUser.coverImage : profileUser?.coverImage
+            }
+          />
           <ProfileInfo
-            profileUser={profileUser}
+            profileUser={isAuthUser ? authUser : profileUser}
             statusWithAuthUser={statusWithAuthUser}
+            setStatusWithAuthUser={setStatusWithAuthUser}
           />
         </>
       ) : (

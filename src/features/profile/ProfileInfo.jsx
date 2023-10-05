@@ -1,7 +1,20 @@
 import Avatar from "../../components/Avatar";
 import AuthUserAction from "./AuthUserAction";
+import FriendAction from "./FriendAction";
+import ReceiverAction from "./ReceiverAction";
+import RequesterAction from "./RequesterAction";
+import UnknownAction from "./UnknownAction";
 
-export default function ProfileInfo({ profileUser }) {
+const mappingObj = {
+  // ถ้า key เป็น "AUTH_USER" ให้ render เป็น <AuthUserAction />
+  AUTH_USER: <AuthUserAction />,
+  UNKNOWN: <UnknownAction />,
+  FRIEND: <FriendAction />,
+  REQUESTER: <RequesterAction />,
+  RECEIVER: <ReceiverAction />,
+};
+
+export default function ProfileInfo({ profileUser, statusWithAuthUser }) {
   return (
     <div className="max-w-6xl mx-auto flex gap-4 px-4 items-end">
       <div className="-mt-8">
@@ -22,9 +35,7 @@ export default function ProfileInfo({ profileUser }) {
           <Avatar className="h-8" />
         </div>
       </div>
-      <div>
-        <AuthUserAction />
-      </div>
+      <div>{mappingObj[statusWithAuthUser]}</div>
     </div>
   );
 }

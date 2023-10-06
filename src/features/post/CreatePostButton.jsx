@@ -39,7 +39,7 @@ export default function CreatePostButton() {
           setIsOpen(false);
         }}
       >
-        <PostForm />
+        <PostForm onSuccess={() => setIsOpen(false)} />
       </Modal>
     </div>
   );

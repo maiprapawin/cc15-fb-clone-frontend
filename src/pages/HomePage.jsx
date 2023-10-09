@@ -13,6 +13,17 @@ export default function HomePage() {
     setAllPost([newPost, ...allPost]); //เอา newPost ไว้ข้างหน้าเพราะว่าโพสใหม่จะอยู่บนสุด & clone obj เก่ามา
   };
 
+  const deletePost = async (postId) => {
+    try {
+      // send req to server โดยส่ง postId ไป
+      // อัพเดท allPost state โดย method filter
+      await axios.delete(`/post/${postId}`);
+      setAllPost(allPost.filter((el) => el.id !== postId));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   //เรียกข้อมูล post
   useEffect(() => {
     axios
@@ -28,7 +39,7 @@ export default function HomePage() {
   return (
     <div className="max-w-[44rem] mx-auto px-8 py-6 flex flex-col gap-4">
       <CreatePostButton createPost={createPost} />
-      <PostList allPost={allPost} />
+      <PostList allPost={allPost} deletePost={deletePost} />
     </div>
   );
 }

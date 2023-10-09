@@ -16,7 +16,7 @@ function Button({ children, onClick }) {
   );
 }
 
-export default function CreatePostButton() {
+export default function CreatePostButton({ createPost }) {
   // เอารูป authUser มา สำหรับกล่องสร้าง post
   const { authUser } = useAuth();
 
@@ -39,7 +39,7 @@ export default function CreatePostButton() {
           setIsOpen(false);
         }}
       >
-        <PostForm onSuccess={() => setIsOpen(false)} />
+        <PostForm onSuccess={() => setIsOpen(false)} onSubmit={createPost} />
       </Modal>
     </div>
   );
